@@ -46,3 +46,9 @@ class Board (object):
 		j = self.index_from_pos(y)
 		return [i,j]
 
+	def set_original_background(self, steps):
+		pass
+
+	def change_background(i, j, color):
+		pass
+

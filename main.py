@@ -13,6 +13,21 @@ def on_click(x, y):
 
 	is_my_piece = g.is_my_piece(i, j, s.get_player())
 
+	if(is_my_piece):
+		#change the piece to move to current piece
+		if(s.has_selected_to_play()):
+			steps = s.get_steps()
+			b.set_original_background(steps)
+			s.restart_play(s.get_player())
+		b.change_background(i, j, 'green')
+		s.add_step(piece)
+	#highlight positions where player wants to move
+	elif (s.has_selected_to_play()):
+			s.add_step(piece)
+			b.change_background(i, j, 'yellow')
+	else:
+		return
+
 def init_board():
 	global b, g, s
 	s = Game_state()
