@@ -45,3 +45,13 @@ class Square(object):
 		self._t.circle(RADIUS)
 		self._t.end_fill()
 		self.set_pos(self._pos)
+
+	def set_custom_bck(self, color):
+		self.draw(color)
+		if(self._player_piece != 0):
+			self.put_piece(self._player_piece)
+
+	def set_original_bck(self):
+		self.draw(self._bck_color)
+		if(self._player_piece != 0):
+			self.put_piece(self._player_piece)

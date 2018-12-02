@@ -22,7 +22,6 @@ class Game_state(object):
 	def add_step(self, pos):
 		self._has_selected_to_play = True
 		self._steps.append(pos)
-		print self._steps
 
 	#all positions selected by player. The first is the piece to move
 	def get_steps(self):

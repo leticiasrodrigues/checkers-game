@@ -15,7 +15,7 @@ class Board (object):
 	def set_on_click(self, func):
 		self._screen.onclick(func)
 		self._screen.listen()
-
+		
 	def set_board_state(self, m):
 		for i in range(SIZE_BOARD):
 			for j in range(SIZE_BOARD):
@@ -46,9 +46,10 @@ class Board (object):
 		j = self.index_from_pos(y)
 		return [i,j]
 
-	def set_original_background(self, steps):
-		pass
+	def set_original_background(self, squares):
+		for s in squares:
+			self._m[s[0]][s[1]].set_original_bck();
 
-	def change_background(i, j, color):
-		pass
+	def change_background(self, i, j, color):
+		self._m[i][j].set_custom_bck(color)
 
