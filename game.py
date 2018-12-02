@@ -14,3 +14,8 @@ class Game(object):
 			for j in range(i%2 ,SIZE_BOARD, 2):	
 				self._m[i][j] = 1
 				self._m[SIZE_BOARD-1-i][SIZE_BOARD-1-j] = 2
+
+	def is_my_piece(self, i, j, player):
+		if(self._m[i][j] == player):
+			return True
+		return False

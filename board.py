@@ -35,3 +35,14 @@ class Board (object):
 
 	def pos_from_index(self,i):
 		return START+(i*SIZE_SQUARE)
+
+	def index_from_pos(self, x):
+		for i in list(range(SIZE_BOARD)):
+			if( x >= (self.pos_from_index(i)) and x < (self.pos_from_index(i)) + SIZE_SQUARE):
+				return i
+
+	def get_index(self, x, y):
+		i = self.index_from_pos(x)
+		j = self.index_from_pos(y)
+		return [i,j]
+
