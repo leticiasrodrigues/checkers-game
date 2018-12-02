@@ -15,7 +15,10 @@ class Board (object):
 	def set_on_click(self, func):
 		self._screen.onclick(func)
 		self._screen.listen()
-		
+
+	def set_play_button(self, func):
+		self._screen.onkey(func, "Return")
+	
 	def set_board_state(self, m):
 		for i in range(SIZE_BOARD):
 			for j in range(SIZE_BOARD):

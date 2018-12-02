@@ -28,6 +28,9 @@ def on_click(x, y):
 	else:
 		return
 
+def do_move():
+	print 'move'
+
 def init_board():
 	global b, g, s
 	s = Game_state()
@@ -35,6 +38,7 @@ def init_board():
 	g.init_matrix()
 	b = Board()
 	b.set_on_click(on_click)
+	b.set_play_button(do_move)
 	b.set_board_state(g.get_matrix())
 	b.wait()
 
