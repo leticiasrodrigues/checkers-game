@@ -18,7 +18,7 @@ class Board (object):
 
 	def set_play_button(self, func):
 		self._screen.onkey(func, "Return")
-	
+
 	def set_board_state(self, m):
 		for i in range(SIZE_BOARD):
 			for j in range(SIZE_BOARD):
@@ -55,4 +55,12 @@ class Board (object):
 
 	def change_background(self, i, j, color):
 		self._m[i][j].set_custom_bck(color)
+
+	def delete_pieces(self, pieces):
+		for k in pieces:
+			self._m[k[0]][k[1]].delete_piece()
+
+	def add_piece(self, i,j,player):
+		self._m[i][j].put_piece(player)
+		self._m[i][j].set_original_bck();
 

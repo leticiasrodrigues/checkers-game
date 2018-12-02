@@ -29,7 +29,14 @@ def on_click(x, y):
 		return
 
 def do_move():
-	print 'move'
+	steps = s.get_steps()
+	if(g.can_move_to(steps)):
+		pieces_to_delete = g.play(steps)
+		pieces_to_delete.append(steps[0])
+		b.set_original_background(steps)
+		b.delete_pieces(pieces_to_delete)
+		b.add_piece(steps[len(steps)-1][0], steps[len(steps)-1][1], s.get_player())
+		s.next_player()
 
 def init_board():
 	global b, g, s

@@ -55,3 +55,7 @@ class Square(object):
 		self.draw(self._bck_color)
 		if(self._player_piece != 0):
 			self.put_piece(self._player_piece)
+
+	def delete_piece(self):
+		self.draw(self._bck_color)
+		self._player_piece = 0
