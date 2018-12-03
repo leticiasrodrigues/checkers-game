@@ -34,9 +34,9 @@ class Game_state(object):
 		self._steps= []
 
 	def lost_pieces (self, n):
-		if(self._player == 1):
+		if(self._player == 2):
 			self._remaining_p1 = self._remaining_p1 - n
-		elif(self._player == 2):
+		elif(self._player == 1):
 			self._remaining_p2 = self._remaining_p2 - n
 
 	def is_game_over(self):

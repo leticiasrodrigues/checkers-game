@@ -2,6 +2,8 @@ import sys
 from board import Board
 from game import Game
 from gameState import Game_state
+import Tkinter
+import tkMessageBox
 
 def on_click(x, y):
 	piece = b.get_index(x,y)
@@ -45,7 +47,7 @@ def do_move():
 		s.next_player()
 		winner = s.is_game_over()
 		if(winner != 0):
-			print 'Player '+str(winner)+' won!'
+			tkMessageBox.showinfo("We have a winner",'Player '+str(winner)+' won!')
 
 def init_board():
 	global b, g, s
