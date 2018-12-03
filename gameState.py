@@ -29,8 +29,7 @@ class Game_state(object):
 	def get_steps(self):
 		return self._steps
 
-	def restart_play(self, player):
-		self._player = player
+	def restart_play(self):
 		self._has_selected_to_play = False
 		self._steps= []
 

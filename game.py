@@ -27,26 +27,30 @@ class Game(object):
 	def can_move_to(self,steps):
 		if (len(steps)==0):
 			return False
-
-		o_i = steps[0][0]
-		o_j = steps[0][1]
-		p = self._m[o_i][o_j]
+		p = self._m[steps[0][0]][steps[0][1]]
 
 		#first position belongs to one player
 		if(p == 0): 
 			return False
-
 		#there is at least one destination
 		elif(len(steps) < 2):
 			return False
-		#all move positions are valid
+		#all positions to move are empty
 		elif(not self.all_steps_empty(steps)):
 			return False
 		#checker move
 		elif(p > 10):
 			return self.can_checker_move_to(steps)
+		#simple move
+		else:
+			return self.can_simple_move_to(steps)
+		
+	def can_simple_move_to(self, steps):
+		o_i = steps[0][0]
+		o_j = steps[0][1]
+		p = self._m[o_i][o_j]
 		#take single step	
-		elif(len(steps) == 2 and abs(o_j - steps[1][1])==1): 
+		if(len(steps) == 2 and abs(o_j - steps[1][1])==1): 
 			t_i = steps[1][0]
 			t_j = steps[1][1]
 			if(p == 1 and t_i-o_i==1):
@@ -60,14 +64,15 @@ class Game(object):
 			t_j = steps[1][1]
 			if(abs(o_j - t_j) != 2):
 				return False
+			#verify if pieces are moving foward
 			if(p == 1 and t_i-o_i!=2):
 				return False
 			if(p == 2 and o_i-t_i!=2):
 				return False
-			#testa se posicao e valida e se tem peca no meio pra comer
+			#verify if its a valid move and if the piece in the middle belongs to adversary
 			for i in range(2, len(steps)):
 				if (abs(o_j - t_j) != 2 and abs(o_i - t_i) != 2):
-					return False
+					return False #not a valid move
 				if(self._m[t_i][t_j] != 0): #square not empty
 					return False
 				#there is a piece in the middle and its an adversary piece
@@ -90,7 +95,7 @@ class Game(object):
 
 		for s in steps[1:]:
 			if(abs(a[0] - s[0]) != abs(a[1] - s[1])) :
-				return False
+				return False #not a diagonal
 			diag = self.return_diag(a,s)
 			for d in diag:
 				v = self._m[d[0]][d[1]]%10
@@ -126,13 +131,19 @@ class Game(object):
 	#change matrix to represent the moves given by steps
 	#assumes that steps represent a valid move
 	def play(self, steps):
-		pieces_to_delete = []
 		l = len(steps)
 		player = self._m[steps[0][0]][steps[0][1]]
 		self._m[steps[0][0]][steps[0][1]] = 0
 		self._m[steps[l-1][0]][steps[l-1][1]] = player
 		if(player > 10):
-			return self.move_checker(steps)
+			return self.checker_move(steps)
+		else:
+			return self.simple_move(steps)
+		
+
+	def simple_move(self, steps):
+		pieces_to_delete = []
+		l = len(steps)
 		if(l >= 2 and abs(steps[0][1] - steps[1][1])==2):
 			for k in range(l-1):
 				p0 = steps[k]
@@ -141,7 +152,8 @@ class Game(object):
 				pieces_to_delete.append([(p0[0] + p1[0])/2,(p0[1] + p1[1])/2 ])
 		return pieces_to_delete
 
-	def move_checker(self, steps):
+
+	def checker_move(self, steps):
 		pieces_to_delete = []
 		s0 = steps[0]
 		for s in steps[1:]:

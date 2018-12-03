@@ -8,6 +8,7 @@ def on_click(x, y):
 	i = piece[0]
 	j = piece[1]
 
+	#click outside board area
 	if (i is None or j is None):
 		return
 
@@ -18,7 +19,7 @@ def on_click(x, y):
 		if(s.has_selected_to_play()):
 			steps = s.get_steps()
 			b.set_original_background(steps)
-			s.restart_play(s.get_player())
+			s.restart_play()
 		b.change_background(i, j, 'green')
 		s.add_step(piece)
 	#highlight positions where player wants to move
@@ -28,6 +29,7 @@ def on_click(x, y):
 	else:
 		return
 
+#move the piece
 def do_move():
 	steps = s.get_steps()
 	if(g.can_move_to(steps)):
@@ -44,7 +46,6 @@ def do_move():
 		winner = s.is_game_over()
 		if(winner != 0):
 			print 'Player '+str(winner)+' won!'
-
 
 def init_board():
 	global b, g, s
