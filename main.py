@@ -32,6 +32,7 @@ def do_move():
 	steps = s.get_steps()
 	if(g.can_move_to(steps)):
 		pieces_to_delete = g.play(steps)
+		s.lost_pieces(len(pieces_to_delete))
 		pieces_to_delete.append(steps[0])
 		b.set_original_background(steps)
 		b.delete_pieces(pieces_to_delete)
@@ -40,6 +41,10 @@ def do_move():
 		g.change_to_checker([i,j])
 		b.add_piece(i, j, g.get_player(i,j))
 		s.next_player()
+		winner = s.is_game_over()
+		if(winner != 0):
+			print 'Player '+str(winner)+' won!'
+
 
 def init_board():
 	global b, g, s
