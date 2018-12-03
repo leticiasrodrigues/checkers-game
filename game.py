@@ -48,7 +48,7 @@ class Game(object):
 	def can_simple_move_to(self, steps):
 		o_i = steps[0][0]
 		o_j = steps[0][1]
-		p = self._m[o_i][o_j]
+		p = self._m[o_i][o_j]%10
 		adv_player = 1 if p == 2 else 2
 		#take single step	
 		if(len(steps) == 2 and abs(o_j - steps[1][1])==1): 
@@ -72,7 +72,7 @@ class Game(object):
 				return False
 			#eat one piece
 			if(len(steps)==2):
-				if(self._m[(o_i + t_i)/2][(o_j + t_j)/2] != adv_player):
+				if(self._m[(o_i + t_i)/2][(o_j + t_j)/2]%10 != adv_player):
 					return False
 				else:
 					return True
@@ -84,7 +84,7 @@ class Game(object):
 				if(self._m[t_i][t_j] != 0): #square not empty
 					return False
 				#there is a piece in the middle and its an adversary piece
-				if(self._m[(o_i + t_i)/2][(o_j + t_j)/2] == adv_player):
+				if(self._m[(o_i + t_i)/2][(o_j + t_j)/2]%10 == adv_player):
 					o_j = t_i
 					o_j = t_j
 					t_i = steps[i][0]
