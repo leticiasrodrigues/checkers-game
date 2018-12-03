@@ -16,9 +16,12 @@ class Game(object):
 				self._m[SIZE_BOARD-1-i][SIZE_BOARD-1-j] = 2
 
 	def is_my_piece(self, i, j, player):
-		if(self._m[i][j] == player):
+		if(self._m[i][j]%10 == player):
 			return True
 		return False
+
+	def get_player(self, i, j):
+		return self._m[i][j]
 
 	#verify if the steps given represent a valid move
 	def can_move_to(self,steps):
@@ -39,7 +42,10 @@ class Game(object):
 		#all move positions are valid
 		elif(not self.all_steps_empty(steps)):
 			return False
-		#take single step
+		#checker move
+		elif(p > 10):
+			return self.can_checker_move_to(steps)
+		#take single step	
 		elif(len(steps) == 2 and abs(o_j - steps[1][1])==1): 
 			t_i = steps[1][0]
 			t_j = steps[1][1]
@@ -53,13 +59,10 @@ class Game(object):
 			t_i = steps[1][0]
 			t_j = steps[1][1]
 			if(abs(o_j - t_j) != 2):
-				print "Not two colluns diferent"
 				return False
 			if(p == 1 and t_i-o_i!=2):
-				print "Not foward p1"
 				return False
 			if(p == 2 and o_i-t_i!=2):
-				print "Not foward p2"
 				return False
 			#testa se posicao e valida e se tem peca no meio pra comer
 			for i in range(2, len(steps)):
@@ -79,6 +82,40 @@ class Game(object):
 					return False
 			return True
 
+	def can_checker_move_to(self, steps):
+		a = steps[0]
+		p = self._m[a[0]][a[1]]%10
+		adv_p = 2 if p == 1 else 1
+		find_adv = False
+
+		for s in steps[1:]:
+			if(abs(a[0] - s[0]) != abs(a[1] - s[1])) :
+				return False
+			diag = self.return_diag(a,s)
+			for d in diag:
+				v = self._m[d[0]][d[1]]%10
+				if (v == 0):
+					continue
+				if(v == p):
+					return False
+				if(v == adv_p and not find_adv):
+					find_adv = True
+					continue
+				if(v == adv_p and find_adv):
+					return False
+			find_adv = False
+			a = s
+		return True
+
+	def return_diag(self, a, b):
+		diag = []
+		i = range(a[0], b[0]) if a[0] < b[0] else range(a[0], b[0], -1)
+		j = range(a[1], b[1]) if a[1] < b[1] else range(a[1], b[1], -1)
+		diff = abs(a[0] - b[0])
+		for k in range(1,diff):
+			diag.append([i[k],j[k]])
+		return diag
+
 	def all_steps_empty(self, steps):
 		steps = steps[1:]
 		for s in steps:
@@ -94,6 +131,8 @@ class Game(object):
 		player = self._m[steps[0][0]][steps[0][1]]
 		self._m[steps[0][0]][steps[0][1]] = 0
 		self._m[steps[l-1][0]][steps[l-1][1]] = player
+		if(player > 10):
+			return self.move_checker(steps)
 		if(l >= 2 and abs(steps[0][1] - steps[1][1])==2):
 			for k in range(l-1):
 				p0 = steps[k]
@@ -101,4 +140,24 @@ class Game(object):
 				self._m[(p0[0] + p1[0])/2][(p0[1] + p1[1])/2] = 0
 				pieces_to_delete.append([(p0[0] + p1[0])/2,(p0[1] + p1[1])/2 ])
 		return pieces_to_delete
+
+	def move_checker(self, steps):
+		pieces_to_delete = []
+		s0 = steps[0]
+		for s in steps[1:]:
+			diag = self.return_diag(s0, s)
+			for d in diag:
+				if(self._m[d[0]][d[1]] != 0):
+					self._m[d[0]][d[1]] = 0
+					pieces_to_delete.append(d)
+					break
+			s0 = s
+		return pieces_to_delete
+
+	def change_to_checker(self, pos):
+		p = self._m[pos[0]][pos[1]]
+		if((p == 1 and pos[0] == 7) or (p == 2 and pos[0] == 0)):
+			self._m[pos[0]][pos[1]] = p+10
+			return True
+		return False
 

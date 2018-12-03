@@ -35,7 +35,10 @@ def do_move():
 		pieces_to_delete.append(steps[0])
 		b.set_original_background(steps)
 		b.delete_pieces(pieces_to_delete)
-		b.add_piece(steps[len(steps)-1][0], steps[len(steps)-1][1], s.get_player())
+		i = steps[len(steps)-1][0]
+		j = steps[len(steps)-1][1]
+		g.change_to_checker([i,j])
+		b.add_piece(i, j, g.get_player(i,j))
 		s.next_player()
 
 def init_board():

@@ -38,7 +38,7 @@ class Square(object):
 	def put_piece(self,player):
 		if(player == 0): return 
 		self._player_piece = player
-		color = 'yellow' if (player == 1) else 'royalblue'
+		color = self.get_piece_color(player)
 		self.set_pos([self._pos[0]+SIZE_SQUARE/2, self._pos[1]+(SIZE_SQUARE/2-RADIUS)])
 		self._t.fillcolor(color)
 		self._t.begin_fill()
@@ -59,3 +59,14 @@ class Square(object):
 	def delete_piece(self):
 		self.draw(self._bck_color)
 		self._player_piece = 0
+
+	def get_piece_color(self, player):
+		if (player == 1):
+			color = 'yellow'
+		elif (player == 2):
+			color = 'royalblue'
+		elif (player == 11):
+			color = 'orange'
+		elif (player == 12):
+			color = 'navy'
+		return color
