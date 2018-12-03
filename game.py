@@ -49,6 +49,7 @@ class Game(object):
 		o_i = steps[0][0]
 		o_j = steps[0][1]
 		p = self._m[o_i][o_j]
+		adv_player = 1 if p == 2 else 2
 		#take single step	
 		if(len(steps) == 2 and abs(o_j - steps[1][1])==1): 
 			t_i = steps[1][0]
@@ -69,6 +70,13 @@ class Game(object):
 				return False
 			if(p == 2 and o_i-t_i!=2):
 				return False
+			#eat one piece
+			if(len(steps)==2):
+				if(self._m[(o_i + t_i)/2][(o_j + t_j)/2] != adv_player):
+					return False
+				else:
+					return True
+			#eat several pieces
 			#verify if its a valid move and if the piece in the middle belongs to adversary
 			for i in range(2, len(steps)):
 				if (abs(o_j - t_j) != 2 and abs(o_i - t_i) != 2):
@@ -76,7 +84,6 @@ class Game(object):
 				if(self._m[t_i][t_j] != 0): #square not empty
 					return False
 				#there is a piece in the middle and its an adversary piece
-				adv_player = 1 if p == 2 else 2
 				if(self._m[(o_i + t_i)/2][(o_j + t_j)/2] == adv_player):
 					o_j = t_i
 					o_j = t_j
